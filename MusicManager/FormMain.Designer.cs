@@ -1,6 +1,6 @@
 ﻿namespace MusicManager
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +52,6 @@
             this.lblAlbumName.Size = new System.Drawing.Size(67, 13);
             this.lblAlbumName.TabIndex = 0;
             this.lblAlbumName.Text = "Album Name";
-            this.lblAlbumName.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtAlbumName
             // 
@@ -86,7 +85,7 @@
             this.btnAdd2.TabIndex = 7;
             this.btnAdd2.Text = ">";
             this.btnAdd2.UseVisualStyleBackColor = true;
-            this.btnAdd2.Click += new System.EventHandler(this.btnAdd2_Click);
+            this.btnAdd2.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnRemove
             // 
@@ -141,7 +140,6 @@
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 1;
             this.label3.Text = "Available Songs";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label2
             // 
@@ -160,28 +158,29 @@
             this.button3.TabIndex = 3;
             this.button3.Text = "Save";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // button4
+            // btnClose
             // 
-            this.button4.Location = new System.Drawing.Point(488, 364);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Cancel";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnClose.Location = new System.Drawing.Point(488, 364);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 4;
+            this.btnClose.Text = "Cancel";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // Form1
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(575, 399);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtAlbumName);
             this.Controls.Add(this.lblAlbumName);
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
@@ -205,7 +204,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnClose;
     }
 }
 

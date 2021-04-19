@@ -11,36 +11,16 @@ using System.Data.SqlClient;
 
 namespace MusicManager
 {
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
 
         private string connectionString = "server=LAB35\\SQL2012;database=MusicManager;uid=lab;pwd=";
         private DataTable dtAvailableSongs = new DataTable();
         private DataTable dtSelectedSongs = new DataTable();
 
-        public Form1()
+        public FormMain()
         {
             InitializeComponent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -121,7 +101,28 @@ namespace MusicManager
             this.loadAvailableSongs();
         }
 
-        private void btnAdd2_Click(object sender, EventArgs e)
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (dtSelectedSongs.Rows.Count > 0)
+            {
+                DataRow dataRow = dtAvailableSongs.NewRow();
+                dataRow["SongID"] = lstSelectedSongs.SelectedValue;
+                dataRow["SongName"] = lstSelectedSongs.Text;
+                dtAvailableSongs.Rows.Add(dataRow);
+                dtAvailableSongs.AcceptChanges();
+
+                foreach (DataRow dr in dtSelectedSongs.Rows)
+                {
+                    if (dr["SongID"].ToString() == dataRow["SongID"].ToString())
+                    {
+                        dr.Delete();
+                    }
+                }
+                dtSelectedSongs.AcceptChanges();
+            }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             if (dtAvailableSongs.Rows.Count > 0)
             {
@@ -142,24 +143,52 @@ namespace MusicManager
             }
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            if (dtSelectedSongs.Rows.Count > 0)
+            try
             {
-                DataRow dataRow = dtAvailableSongs.NewRow();
-                dataRow["SongID"] = lstSelectedSongs.SelectedValue;
-                dataRow["SongName"] = lstSelectedSongs.Text;
-                dtAvailableSongs.Rows.Add(dataRow);
-                dtAvailableSongs.AcceptChanges();
+                SqlConnection conn = new SqlConnection(connectionString);
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                string queryString = "INSERT INTO Albums (AlbumName, CreatedDate) VALUES (N'" + txtAlbumName.Text.Replace("'", "''") + "', GETDATE())";
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = queryString;
+                cmd.CommandType = CommandType.Text;
+                Int32 recordAffected = cmd.ExecuteNonQuery();
+
+                SqlDataAdapter da = new SqlDataAdapter("SELECT MAX(AlbumID) FROM Albums", conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                string AlbumID = dt.Rows[0][0].ToString();
 
                 foreach (DataRow dr in dtSelectedSongs.Rows)
                 {
-                    if (dr["SongID"].ToString() == dataRow["SongID"].ToString())
-                    {
-                        dr.Delete();
-                    }
+                    queryString = "INSERT INTO AlbumSong (AlbumID, SongID) VALUES (" + AlbumID + ", " + dr["SongID"] + ")";
+                    cmd.CommandText = queryString;
+                    cmd.ExecuteNonQuery();
                 }
-                dtSelectedSongs.AcceptChanges();
+
+                MessageBox.Show("Record added successfully.");
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show(
+                "Are you sure you want to exit?",
+                "Confirm Exit",
+                MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                this.Close();
             }
         }
     }
